@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float turnSpeed = 20f;
-
+    
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
     Animator m_Animator;
@@ -29,6 +30,16 @@ public class PlayerMovement : MonoBehaviour
         // Stores and normalizes input as a vector3
         m_Movement.Set(horizontal, 0f, vertical);
         m_Movement.Normalize ();
+        
+        //if LeftShift is held, Player Sprints
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            m_Animator.SetFloat("runSpeed", 1.3f);
+        }
+        else
+        {
+            m_Animator.SetFloat("runSpeed", 1.0f);
+        }
 
         // Changes bool state if player is moving
         bool hasHorizontalInput = !Mathf.Approximately(horizontal, 0f);
@@ -45,4 +56,5 @@ public class PlayerMovement : MonoBehaviour
         m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
         m_Rigidbody.MoveRotation(m_Rotation);
     }
+
 }
