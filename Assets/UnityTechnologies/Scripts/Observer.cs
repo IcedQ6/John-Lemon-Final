@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Observer : MonoBehaviour
 {
+    public GameObject enemy;
     public Transform player;
+    public GameObject shield;
     public GameEnding gameEnding;
 
     bool m_IsPlayerInRange;
@@ -36,6 +39,11 @@ public class Observer : MonoBehaviour
 
             if(Physics.Raycast(ray, out raycastHit))
             {
+                if (raycastHit.collider.transform == shield.transform)
+                {
+                    shield.SetActive(false);
+                    enemy.SetActive(false);
+                }
                 if (raycastHit.collider.transform == player)
                 {
                     gameEnding.CaughtPlayer();
